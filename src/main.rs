@@ -19,7 +19,13 @@ async fn hello(info: web::Path<(u64, u64)>) -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let address = ("127.0.0.1", 8080);
+    let address: String;
+    match std::env::args().nth(1) {
+        None => { address = String::from("127.0.0.1:3333") }
+        Some(arg) => { address = arg }
+    }
+
+
     println!("Binding server to address {:?}", address);
     HttpServer::new(|| {
         App::new()
